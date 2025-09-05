@@ -19,6 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   
   <style>
+    /* --- Temel Ayarlar ve Değişkenler --- */
     :root {
       --primary: #FF5DB1;
       --secondary: #9B59FF;
@@ -27,29 +28,54 @@
       --bg-gradient: linear-gradient(to bottom, #FFC0EB, #B388FF, #80D0FF);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+    
+    /* --- Genel Layout --- */
     body { font-family: 'Poppins', sans-serif; background: var(--bg-gradient); animation: gradientShift 15s ease infinite; background-size: 200% 200%; color: var(--text-on-light); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: hidden; position: relative; }
-    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-    header, footer { width: 100%; text-align: center; padding: 1rem; position: relative; z-index: 2; }
     main { flex-grow: 1; display: flex; align-items: center; justify-content: center; width: 100%; }
-    #rainCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
     .content-wrapper { position: relative; z-index: 1; max-width: 880px; padding: clamp(12px, 3vw, 28px); text-align: center; display: flex; flex-direction: column; gap: clamp(12px, 2.6vw, 24px); align-items: center; }
+    .footer { width: 100%; text-align: center; padding: 1rem; position: relative; z-index: 2; color: #444; }
+    
+    /* --- Yazı ve Başlıklar --- */
     .hero-title { font-size: clamp(28px, 6vw, 64px); font-weight: 600; text-shadow: 0 0 12px rgba(255, 93, 177, 0.5); }
     .question { font-size: clamp(24px, 5vw, 48px); margin-bottom: clamp(10px, 2vw, 16px); }
+    
+    /* --- Butonlar --- */
     .cta-row { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: clamp(10px, 2vw, 16px); }
-    .btn { padding: 12px 22px; border: 2px solid transparent; border-radius: 9999px; font-family: inherit; font-weight: 600; font-size: clamp(16px, 2.4vw, 22px); cursor: pointer; box-shadow: 0 10px 24px rgba(0,0,0,0.16); transition: transform 0.3s ease, font-size 0.3s ease, padding 0.3s ease; white-space: nowrap; }
+    .btn { padding: 12px 22px; border: 2px solid transparent; border-radius: 9999px; font-family: inherit; font-weight: 600; font-size: clamp(16px, 2.4vw, 22px); cursor: pointer; box-shadow: 0 10px 24px rgba(0,0,0,0.16); transition: transform 0.3s ease, font-size 0.3s ease, padding 0.3s ease, opacity 0.3s ease; white-space: nowrap; }
     .btn:focus-visible { outline: none; border-color: var(--text-on-light); box-shadow: 0 0 0 4px var(--primary); }
     .btn.yes { background: linear-gradient(135deg, #FF7CCB, #FF5DB1); color: var(--text-on-dark); }
     .btn.no { background: linear-gradient(135deg, #B388FF, #8E44FF); color: var(--text-on-dark); }
+    
+    /* --- Aşkmetresi --- */
+    .love-meter-container { width: 100%; max-width: 400px; margin-top: 2.5rem; }
+    .love-meter-question { font-size: clamp(18px, 3vw, 22px); font-weight: 600; margin-bottom: 1rem; }
+    .slider-wrapper { display: flex; align-items: center; gap: 1rem; }
+    #loveSlider { -webkit-appearance: none; appearance: none; width: 100%; height: 12px; background: linear-gradient(90deg, var(--secondary) 0%, var(--primary) 100%); border-radius: 999px; outline: none; transition: opacity 0.2s; }
+    #loveSlider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; background: var(--text-on-dark); border: 3px solid var(--primary); border-radius: 50%; cursor: pointer; box-shadow: 0 0 8px rgba(0,0,0,0.2); transition: transform 0.2s ease; }
+    #loveSlider::-moz-range-thumb { width: 24px; height: 24px; background: var(--text-on-dark); border: 3px solid var(--primary); border-radius: 50%; cursor: pointer; box-shadow: 0 0 8px rgba(0,0,0,0.2); }
+    #loveSlider:active::-webkit-slider-thumb { transform: scale(1.2); }
+    #sliderValue { font-size: 1.2em; font-weight: 600; color: var(--primary); min-width: 50px; }
+    #loveMeterResult { font-size: clamp(16px, 2.5vw, 20px); font-weight: 600; margin-top: 1rem; opacity: 0; transition: opacity 0.5s ease, visibility 0.5s ease; visibility: hidden; }
+    #loveMeterResult.visible { opacity: 1; visibility: visible; }
+    
+    /* --- Kutlama Ekranı ve Efektler --- */
     .celebrate-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; flex-direction: column; gap: 20px; padding: 1rem; }
     .celebrate-overlay[style*="display: flex"] { animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .celebrate-overlay .gif-container { position: relative; }
-    .celebrate-overlay img { max-width: clamp(220px, 40vw, 520px); animation: popIn 0.6s ease forwards; }
-    @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     .final-text { color: var(--text-on-dark); font-size: clamp(18px, 3vw, 28px); font-weight: 600; }
     .btn-close { position: absolute; top: 1rem; right: 1rem; background: var(--primary); color: var(--text-on-dark); border-radius: 50%; width: 44px; height: 44px; font-size: 24px; line-height: 1; }
+    .celebrate-overlay .gif-container { position: relative; }
+    .celebrate-overlay img { max-width: clamp(220px, 40vw, 520px); animation: popIn 0.6s ease forwards; transition: opacity 0.5s ease-in-out; }
+    .celebrate-overlay img.fade-out { opacity: 0; }
     .heart-particle { position: absolute; left: 50%; top: 55%; transform: translate(-50%, -50%); opacity: 0; transition: transform 1.2s cubic-bezier(0.17, 0.84, 0.44, 1), opacity 1.2s ease; pointer-events: none; }
+    #rainCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+    /* --- Animasyonlar --- */
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    
+    /* --- Erişilebilirlik --- */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } .heart-particle { display: none; } }
   </style>
 </head>
@@ -67,138 +93,181 @@
         <button class="btn yes" id="btnYes" aria-label="Evet, barışalım">Evet 💖</button>
         <button class="btn no" id="btnNo" aria-label="Hayır">Hayır 😢</button>
       </div>
+      <div class="love-meter-container">
+        <p class="love-meter-question">Beni ne kadar seviyorsun?</p>
+        <div class="slider-wrapper">
+          <input type="range" id="loveSlider" min="0" max="100" value="50">
+          <span id="sliderValue">50%</span>
+        </div>
+        <p id="loveMeterResult">Ben de öyle düşünmüştüm bebek 😎</p>
+      </div>
     </div>
   </main>
 
   <div class="celebrate-overlay" id="celebrateOverlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
     <div class="gif-container">
-      <img src="https://media1.tenor.com/m/LLEtVG2MxS8AAAAC/theodoros.gif" alt="Birbirine sarılan iki sevimli karakterin olduğu GIF." loading="lazy" />
+      <img src="https://media1.tenor.com/m/LLEtVG2MxS8AAAAC/theodoros.gif" alt="Birbirine sarılan iki sevimli karakterin olduğu GIF." id="celebrationGif" />
     </div>
     <p id="dialogTitle" class="final-text">Biliyordum ❤️ Seni çok seviyorum!</p>
     <button id="closeOverlay" class="btn btn-close" aria-label="Kapat">&times;</button>
   </div>
 
-  <footer class="footer" style="color: #444;">Made with ❤️ for Selim</footer>
+  <footer class="footer">Made with ❤️ by Selim for İclal Boroğlu</footer>
 
   <script>
-    const CONSTANTS = { YES_GROWTH_FACTOR: 1.4, NO_SHRINK_FACTOR: 0.85, HEART_PARTICLE_COUNT: 40 };
-    const STRINGS = { finalMessage: 'Biliyordum ❤️ Seni çok seviyorum!', yesButtonGrew: 'Evet butonu büyüdü!', noButtonShrunk: 'Hayır butonu küçüldü.' };
-    const DOMElements = { canvas: document.getElementById('rainCanvas'), btnYes: document.getElementById('btnYes'), btnNo: document.getElementById('btnNo'), questionEl: document.getElementById('question'), overlay: document.getElementById('celebrateOverlay'), closeOverlayBtn: document.getElementById('closeOverlay'), liveAnnouncer: document.getElementById('liveAnnouncer'), gifContainer: document.querySelector('.gif-container') };
-    const state = { noScale: 1, yesFontSize: 22, yesPadding: { v: 12, h: 22 }, isRainRunning: false, lastActiveElement: null, reduceMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches };
+    (function() {
+      "use strict";
 
-    function onNoClick() {
-      state.noScale *= CONSTANTS.NO_SHRINK_FACTOR;
-      DOMElements.btnNo.style.transform = `scale(${state.noScale})`;
-      state.yesFontSize *= CONSTANTS.YES_GROWTH_FACTOR;
-      state.yesPadding.v *= CONSTANTS.YES_GROWTH_FACTOR * 0.9;
-      state.yesPadding.h *= CONSTANTS.YES_GROWTH_FACTOR * 0.9;
-      DOMElements.btnYes.style.fontSize = `${state.yesFontSize}px`;
-      DOMElements.btnYes.style.padding = `${state.yesPadding.v}px ${state.yesPadding.h}px`;
-      DOMElements.liveAnnouncer.textContent = `${STRINGS.yesButtonGrew} ${STRINGS.noButtonShrunk}`;
-      checkIfYesFillsScreen();
-    }
-    
-    function checkIfYesFillsScreen() {
-      const yesBtnRect = DOMElements.btnYes.getBoundingClientRect();
-      const screenWidth = window.innerWidth;
-      if (yesBtnRect.width >= screenWidth * 0.8) {
-        celebrate();
+      // --- Sabit Değişkenler ve Metinler ---
+      const CONSTANTS = { 
+        YES_GROWTH_FACTOR: 1.4, NO_SHRINK_FACTOR: 0.85, HEART_PARTICLE_COUNT: 40,
+        SLIDER_ANIM_DURATION: 400, RESULT_TEXT_DELAY: 1000,
+        FIRST_GIF_URL: 'https://media1.tenor.com/m/LLEtVG2MxS8AAAAC/theodoros.gif',
+        SECOND_GIF_URL: 'https://media1.tenor.com/m/o_5RQarGvJ0AAAAC/kiss.gif',
+        GIF_SWAP_DELAY: 2000, GIF_FADE_DURATION: 500
+      };
+      const STRINGS = { 
+        finalMessage: 'Biliyordum ❤️ Seni çok seviyorum!', 
+        yesButtonGrew: 'Evet butonu büyüdü!', 
+        noButtonShrunk: 'Hayır butonu küçüldü.' 
+      };
+      
+      // --- DOM Elementleri ---
+      const DOMElements = { 
+        canvas: document.getElementById('rainCanvas'), btnYes: document.getElementById('btnYes'), btnNo: document.getElementById('btnNo'), 
+        questionEl: document.getElementById('question'), overlay: document.getElementById('celebrateOverlay'), closeOverlayBtn: document.getElementById('closeOverlay'), 
+        liveAnnouncer: document.getElementById('liveAnnouncer'), gifContainer: document.querySelector('.gif-container'),
+        celebrationGif: document.getElementById('celebrationGif'),
+        loveSlider: document.getElementById('loveSlider'), sliderValue: document.getElementById('sliderValue'), loveMeterResult: document.getElementById('loveMeterResult')
+      };
+
+      // --- Uygulama Durumu (State) ---
+      const state = { 
+        noScale: 1, yesFontSize: 22, yesPadding: { v: 12, h: 22 }, 
+        isRainRunning: false, lastActiveElement: null, reduceMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+        isAnimating: false, gifSwapTimeout: null
+      };
+
+      // --- UI Etkileşim Fonksiyonları (Handlers) ---
+      function onNoClick() {
+        state.noScale *= CONSTANTS.NO_SHRINK_FACTOR;
+        DOMElements.btnNo.style.transform = `scale(${state.noScale})`;
+        
+        state.yesFontSize *= CONSTANTS.YES_GROWTH_FACTOR;
+        state.yesPadding.v *= CONSTANTS.YES_GROWTH_FACTOR * 0.9;
+        state.yesPadding.h *= CONSTANTS.YES_GROWTH_FACTOR * 0.9;
+        DOMElements.btnYes.style.fontSize = `${state.yesFontSize}px`;
+        DOMElements.btnYes.style.padding = `${state.yesPadding.v}px ${state.yesPadding.h}px`;
+        
+        DOMElements.liveAnnouncer.textContent = `${STRINGS.yesButtonGrew} ${STRINGS.noButtonShrunk}`;
+        
+        const yesButtonRect = DOMElements.btnYes.getBoundingClientRect();
+        if (yesButtonRect.width >= window.innerWidth * 0.9) {
+            DOMElements.btnNo.style.display = 'none';
+        }
       }
-    }
-
-    function celebrate() {
-      DOMElements.questionEl.textContent = STRINGS.finalMessage;
-      if (!state.reduceMotion) { stopRain(); heartsBurst(DOMElements.gifContainer, CONSTANTS.HEART_PARTICLE_COUNT); }
-      openDialog();
-    }
-    
-    function openDialog() {
-      DOMElements.overlay.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-      state.lastActiveElement = document.activeElement;
-      DOMElements.closeOverlayBtn.focus();
-      document.addEventListener('keydown', onDialogKey);
-      document.querySelector('main').setAttribute('aria-hidden', 'true');
-      DOMElements.btnYes.disabled = true;
-      DOMElements.btnNo.disabled = true;
-    }
-
-    function closeDialog() {
-      DOMElements.overlay.style.display = 'none';
-      document.body.style.overflow = '';
-      document.removeEventListener('keydown', onDialogKey);
-      if (state.lastActiveElement) state.lastActiveElement.focus();
-      document.querySelector('main').removeAttribute('aria-hidden');
-      DOMElements.btnYes.disabled = false;
-      DOMElements.btnNo.disabled = false;
-    }
-
-    function onDialogKey(e) {
-      if (e.key === 'Escape') return closeDialog();
-      if (e.key === 'Tab') {
-        const focusables = Array.from(DOMElements.overlay.querySelectorAll('a[href], button, [tabindex]:not([tabindex="-1"])'));
-        if (!focusables.length) return;
-        const first = focusables[0], last = focusables[focus-1];
-        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } 
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      
+      function celebrate() {
+        DOMElements.questionEl.textContent = STRINGS.finalMessage;
+        if (!state.reduceMotion) { stopRain(); heartsBurst(DOMElements.gifContainer, CONSTANTS.HEART_PARTICLE_COUNT); }
+        openDialog();
       }
-    }
 
-    function heartsBurst(parent, n) {
-      for (let i = 0; i < n; i++) {
-        const s = document.createElement('span');
-        s.textContent = '❤️';
-        s.className = 'heart-particle';
-        s.style.fontSize = (16 + Math.random() * 24) + 'px';
-        parent.appendChild(s);
-        requestAnimationFrame(() => {
-          const x = (Math.random() * 240 - 120), y = (Math.random() * -260) - 90, rot = Math.random() * 60 - 30;
-          s.style.opacity = '1';
-          s.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`;
-        });
-        setTimeout(() => s.remove(), 1400);
-      }
-    }
+      function handleSliderChange() {
+        if (state.isAnimating) return;
+        DOMElements.loveMeterResult.classList.remove('visible');
+        const value = parseInt(DOMElements.loveSlider.value);
 
-    const ctx = DOMElements.canvas.getContext('2d');
-    let drops = [];
-    function resizeCanvas() { DOMElements.canvas.width = window.innerWidth; DOMElements.canvas.height = window.innerHeight; initRain(); }
-    function initRain() {
-      let density = state.reduceMotion ? 8 : (window.innerWidth > 768 ? 30 : 20);
-      drops = [];
-      for (let i = 0; i < density; i++) {
-        const size = Math.random() * 24 + 18;
-        drops.push({ x: Math.random() * DOMElements.canvas.width, y: Math.random() * -DOMElements.canvas.height, vy: Math.random() * 120 + 60, size: size, font: `${Math.floor(size)}px Arial` });
+        if (value < 100) {
+          animateSlider(value, 100, CONSTANTS.SLIDER_ANIM_DURATION);
+        } else {
+          setTimeout(() => DOMElements.loveMeterResult.classList.add('visible'), CONSTANTS.RESULT_TEXT_DELAY);
+        }
       }
-    }
-    function drawRain() {
-      if (!state.isRainRunning) return;
-      ctx.clearRect(0, 0, DOMElements.canvas.width, DOMElements.canvas.height);
-      const dt = 1/60;
-      ctx.textBaseline = 'top';
-      ctx.globalAlpha = 0.85;
-      for (let drop of drops) {
-        drop.y += drop.vy * dt;
-        if (drop.y > DOMElements.canvas.height) { drop.y = -drop.size; drop.x = Math.random() * DOMElements.canvas.width; }
-        ctx.font = drop.font;
-        ctx.fillText('😢', drop.x, drop.y);
-      }
-      ctx.globalAlpha = 1;
-      requestAnimationFrame(drawRain);
-    }
-    function startRain() { if (!state.isRainRunning) { state.isRainRunning = true; requestAnimationFrame(drawRain); } }
-    function stopRain() { state.isRainRunning = false; }
-    
-    function main() {
-      DOMElements.btnNo.addEventListener('click', onNoClick);
-      DOMElements.btnYes.addEventListener('click', celebrate);
-      DOMElements.closeOverlayBtn.addEventListener('click', closeDialog);
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
-      if (!state.reduceMotion) startRain();
-    }
 
-    main();
+      function handleSliderInput() {
+        if (state.isAnimating) return;
+        DOMElements.sliderValue.textContent = `${DOMElements.loveSlider.value}%`;
+        DOMElements.loveMeterResult.classList.remove('visible');
+      }
+
+      // --- Animasyon Mantığı ---
+      function animateSlider(startValue, endValue, duration) { /* ... Bu fonksiyon değişmedi ... */ }
+      function heartsBurst(parent, n) { /* ... Bu fonksiyon değişmedi ... */ }
+
+      // --- Diyalog (Overlay) Mantığı ---
+      function openDialog() {
+        // GIF'i her zaman ilk durumuna sıfırla
+        DOMElements.celebrationGif.src = CONSTANTS.FIRST_GIF_URL;
+        DOMElements.celebrationGif.classList.remove('fade-out');
+        
+        DOMElements.overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        state.lastActiveElement = document.activeElement;
+        DOMElements.closeOverlayBtn.focus();
+        document.addEventListener('keydown', onDialogKey);
+        [DOMElements.btnYes, DOMElements.btnNo].forEach(btn => btn.disabled = true);
+
+        // GIF değiştirme animasyonunu zamanla
+        state.gifSwapTimeout = setTimeout(() => {
+          DOMElements.celebrationGif.classList.add('fade-out');
+          setTimeout(() => {
+            DOMElements.celebrationGif.src = CONSTANTS.SECOND_GIF_URL;
+            DOMElements.celebrationGif.classList.remove('fade-out');
+          }, CONSTANTS.GIF_FADE_DURATION);
+        }, CONSTANTS.GIF_SWAP_DELAY);
+      }
+
+      function closeDialog() {
+        // Zamanlanmış GIF değişimini iptal et (eğer kullanıcı 2 saniyeden önce kapatırsa)
+        clearTimeout(state.gifSwapTimeout);
+        
+        DOMElements.overlay.style.display = 'none';
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', onDialogKey);
+        if (state.lastActiveElement) state.lastActiveElement.focus();
+        [DOMElements.btnYes, DOMElements.btnNo].forEach(btn => btn.disabled = false);
+      }
+
+      function onDialogKey(e) { if (e.key === 'Escape') closeDialog(); }
+      
+      // --- Canvas (Yağmur Efekti) Mantığı ---
+      const ctx = DOMElements.canvas.getContext('2d');
+      let drops = [];
+      function resizeCanvas() { /* ... Bu fonksiyon değişmedi ... */ }
+      function initRain() { /* ... Bu fonksiyon değişmedi ... */ }
+      function drawRain() { /* ... Bu fonksiyon değişmedi ... */ }
+      function startRain() { if (!state.isRainRunning) { state.isRainRunning = true; requestAnimationFrame(drawRain); } }
+      function stopRain() { state.isRainRunning = false; }
+      
+      // --- Değişmeyen Fonksiyonların Kısa Halleri (Yukarıdaki Kodda Tamamı Mevcut) ---
+      function animateSlider(startValue, endValue, duration) { state.isAnimating = true; DOMElements.loveSlider.disabled = true; let startTime = null; function animationStep(currentTime) { if (!startTime) startTime = currentTime; const progress = Math.min((currentTime - startTime) / duration, 1); const currentValue = startValue + (endValue - startValue) * progress; DOMElements.loveSlider.value = currentValue; DOMElements.sliderValue.textContent = `${Math.round(currentValue)}%`; if (progress < 1) { requestAnimationFrame(animationStep); } else { setTimeout(() => { DOMElements.loveMeterResult.classList.add('visible'); state.isAnimating = false; DOMElements.loveSlider.disabled = false; }, CONSTANTS.RESULT_TEXT_DELAY); } } requestAnimationFrame(animationStep); }
+      function heartsBurst(parent, n) { for (let i = 0; i < n; i++) { const s = document.createElement('span'); s.textContent = '❤️'; s.className = 'heart-particle'; s.style.fontSize = `${16 + Math.random() * 24}px`; parent.appendChild(s); requestAnimationFrame(() => { const x = Math.random() * 240 - 120; const y = Math.random() * -260 - 90; const rot = Math.random() * 60 - 30; s.style.opacity = '1'; s.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`; }); setTimeout(() => s.remove(), 1400); } }
+      function resizeCanvas() { DOMElements.canvas.width = window.innerWidth; DOMElements.canvas.height = window.innerHeight; initRain(); }
+      function initRain() { const density = state.reduceMotion ? 8 : (window.innerWidth > 768 ? 30 : 20); drops = Array.from({ length: density }, () => { const size = Math.random() * 24 + 18; return { x: Math.random() * window.innerWidth, y: Math.random() * -window.innerHeight, vy: Math.random() * 120 + 60, size: size, font: `${Math.floor(size)}px Arial` }; }); }
+      function drawRain() { if (!state.isRainRunning) return; ctx.clearRect(0, 0, DOMElements.canvas.width, DOMElements.canvas.height); const dt = 1 / 60; ctx.textBaseline = 'top'; ctx.globalAlpha = 0.85; for (const drop of drops) { drop.y += drop.vy * dt; if (drop.y > DOMElements.canvas.height) { drop.y = -drop.size; drop.x = Math.random() * DOMElements.canvas.width; } ctx.font = drop.font; ctx.fillText('😢', drop.x, drop.y); } ctx.globalAlpha = 1; requestAnimationFrame(drawRain); }
+
+      // --- Başlatma ---
+      function initEventListeners() {
+        DOMElements.btnNo.addEventListener('click', onNoClick);
+        DOMElements.btnYes.addEventListener('click', celebrate);
+        DOMElements.closeOverlayBtn.addEventListener('click', closeDialog);
+        window.addEventListener('resize', resizeCanvas);
+        DOMElements.loveSlider.addEventListener('input', handleSliderInput);
+        DOMElements.loveSlider.addEventListener('change', handleSliderChange);
+      }
+
+      function init() {
+        initEventListeners();
+        resizeCanvas();
+        if (!state.reduceMotion) {
+          startRain();
+        }
+      }
+
+      init(); // Uygulamayı başlat
+
+    })();
   </script>
 </body>
 </html>
